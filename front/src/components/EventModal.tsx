@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Event, EventCreate, EventUpdate } from '@/lib/api';
 import { useEventsStore } from '@/store/events';
-import { format } from 'date-fns';
+import { format, parseISO, formatISO } from 'date-fns';
 
 interface EventModalProps {
   event?: Event;
@@ -40,16 +40,20 @@ export function EventModal({ event, isOpen, onClose, initialDate }: EventModalPr
 
   useEffect(() => {
     if (event) {
+      // Convert UTC date from server to local datetime-local input value
+      const localDate = format(parseISO(event.date), "yyyy-MM-dd'T'HH:mm");
+      
       setFormData({
         title: event.title,
         description: event.description || '',
         location: event.location || '',
-        date: format(new Date(event.date), "yyyy-MM-dd'T'HH:mm"),
+        date: localDate,
         duration: event.duration || 60,
         capacity: event.capacity || 0,
         is_active: event.is_active ?? true,
       });
     } else if (initialDate) {
+      // Format initialDate (which is already local) for datetime-local input
       setFormData(prev => ({
         ...prev,
         date: format(initialDate, "yyyy-MM-dd'T'HH:mm"),
@@ -67,10 +71,17 @@ export function EventModal({ event, isOpen, onClose, initialDate }: EventModalPr
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      // Convert local datetime-local input value to UTC for server
+      const utcDate = formatISO(new Date(formData.date));
+      const dataToSubmit = {
+        ...formData,
+        date: utcDate,
+      };
+
       if (event) {
-        await updateEvent(event.id, formData as EventUpdate);
+        await updateEvent(event.id, dataToSubmit as EventUpdate);
       } else {
-        await createEvent(formData as EventCreate);
+        await createEvent(dataToSubmit as EventCreate);
       }
       onClose();
     } catch (error) {

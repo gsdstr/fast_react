@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { format, addDays, startOfWeek, isWithinInterval, addMinutes, isSameDay, isToday } from 'date-fns';
+import { format, addDays, startOfWeek, isWithinInterval, addMinutes, isToday, parseISO } from 'date-fns';
 import { Event } from '@/lib/api';
 import { CalendarEvent } from './CalendarEvent';
 import { EventModal } from '@/components/EventModal';
@@ -41,7 +41,7 @@ export function CalendarGrid({ events, selectedDate }: CalendarGridProps) {
     const nextDate = addDays(currentDate, 1);
 
     return events.filter((event) => {
-      const eventStart = new Date(event.date);
+      const eventStart = parseISO(event.date); // Parse UTC date from server
       const eventEnd = addMinutes(eventStart, event.duration || 60);
       return isWithinInterval(eventStart, { start: currentDate, end: nextDate }) ||
              isWithinInterval(eventEnd, { start: currentDate, end: nextDate }) ||
@@ -127,7 +127,7 @@ export function CalendarGrid({ events, selectedDate }: CalendarGridProps) {
 
                 {/* Events */}
                 {dayEvents.map((event) => {
-                  const eventStart = new Date(event.date);
+                  const eventStart = parseISO(event.date); // Parse UTC date from server
                   const eventHour = eventStart.getHours();
                   const eventMinutes = eventStart.getMinutes();
                   const topPosition = (eventHour + eventMinutes / 60) * 48;

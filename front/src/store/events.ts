@@ -16,7 +16,7 @@ interface EventsState {
 export const useEventsStore = create<EventsState>((set) => ({
   events: [],
   selectedEvent: null,
-  isLoading: false,
+  isLoading: true,
   error: null,
 
   fetchEvents: async (params) => {
