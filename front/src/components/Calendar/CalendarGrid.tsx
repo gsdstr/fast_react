@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { format, addDays, startOfWeek, isSameDay } from 'date-fns';
+import { format, addDays, startOfWeek, isSameDay, addMinutes, isWithinInterval } from 'date-fns';
 import { Event } from '@/lib/api';
 import { CalendarEvent } from './CalendarEvent';
 import { CreateEventModal } from './CreateEventModal';
@@ -27,11 +27,17 @@ export function CalendarGrid({ events, selectedDate }: CalendarGridProps) {
 
   const getEventsForDayAndHour = (day: number, hour: number) => {
     const currentDate = addDays(startOfCurrentWeek, day);
+    currentDate.setHours(hour, 0, 0, 0);
+    
     return events.filter((event) => {
-      const eventDate = new Date(event.date);
-      return (
-        isSameDay(eventDate, currentDate) && eventDate.getHours() === hour
-      );
+      const eventStart = new Date(event.date);
+      const eventEnd = addMinutes(eventStart, event.duration || 60);
+      const hourStart = new Date(currentDate);
+      const hourEnd = addMinutes(hourStart, 60);
+
+      return isWithinInterval(eventStart, { start: hourStart, end: hourEnd }) ||
+             isWithinInterval(eventEnd, { start: hourStart, end: hourEnd }) ||
+             (eventStart <= hourStart && eventEnd >= hourEnd);
     });
   };
 

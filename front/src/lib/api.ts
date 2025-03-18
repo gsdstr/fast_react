@@ -8,6 +8,7 @@ export interface Event {
   description?: string;
   location?: string;
   date: string;
+  duration?: number;  // Duration in minutes
   capacity?: number;
   is_active?: boolean;
   created_at: string;
@@ -19,6 +20,7 @@ export interface EventCreate {
   description?: string;
   location?: string;
   date: string;
+  duration?: number;  // Duration in minutes
   capacity?: number;
   is_active?: boolean;
 }
@@ -28,6 +30,7 @@ export interface EventUpdate {
   description?: string;
   location?: string;
   date?: string;
+  duration?: number;  // Duration in minutes
   capacity?: number;
   is_active?: boolean;
 }

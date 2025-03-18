@@ -15,6 +15,7 @@ export function EventModal({ event, isOpen, onClose }: EventModalProps) {
     description: event?.description || '',
     location: event?.location || '',
     date: event?.date ? new Date(event.date).toISOString().split('T')[0] : '',
+    duration: event?.duration || 60, // Default duration of 60 minutes
     capacity: event?.capacity || 0,
     is_active: event?.is_active ?? true,
   });
@@ -79,17 +80,32 @@ export function EventModal({ event, isOpen, onClose }: EventModalProps) {
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Date
-            </label>
-            <input
-              type="datetime-local"
-              required
-              value={formData.date}
-              onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            />
+          <div className="flex gap-4">
+            <div className="flex-1">
+              <label className="block text-sm font-medium text-gray-700">
+                Date
+              </label>
+              <input
+                type="datetime-local"
+                required
+                value={formData.date}
+                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              />
+            </div>
+            <div className="w-32">
+              <label className="block text-sm font-medium text-gray-700">
+                Duration
+              </label>
+              <input
+                type="number"
+                min="0"
+                value={formData.duration}
+                onChange={(e) => setFormData({ ...formData, duration: parseInt(e.target.value) || 60 })}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              />
+              <div className="text-xs text-gray-500 mt-1">Minutes</div>
+            </div>
           </div>
 
           <div>

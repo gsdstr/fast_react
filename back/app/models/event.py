@@ -12,6 +12,7 @@ class Event(Base):
     description = Column(Text)
     location = Column(String(255))
     date = Column(DateTime(timezone=True), nullable=False)
+    duration = Column(Integer, nullable=True, comment="Duration in minutes")
     capacity = Column(Integer, default=0)
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())

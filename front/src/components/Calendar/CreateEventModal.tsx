@@ -22,6 +22,7 @@ export function CreateEventModal({
     description: '',
     location: '',
     date: '',
+    duration: 60, // Default duration of 60 minutes
     capacity: 0,
     is_active: true,
   });
@@ -33,6 +34,7 @@ export function CreateEventModal({
         description: event.description || '',
         location: event.location || '',
         date: format(new Date(event.date), "yyyy-MM-dd'T'HH:mm"),
+        duration: event.duration || 60,
         capacity: event.capacity || 0,
         is_active: event.is_active ?? true,
       });
@@ -104,6 +106,17 @@ export function CreateEventModal({
                 onChange={(e) => setFormData({ ...formData, date: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
+            </div>
+            <div className="w-32">
+              <input
+                type="number"
+                placeholder="Duration"
+                min="0"
+                value={formData.duration}
+                onChange={(e) => setFormData({ ...formData, duration: parseInt(e.target.value) || 0 })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <div className="text-xs text-gray-500 mt-1">Minutes</div>
             </div>
           </div>
 

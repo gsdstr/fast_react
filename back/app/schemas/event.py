@@ -7,6 +7,7 @@ class EventBase(BaseModel):
     description: Optional[str] = None
     location: Optional[str] = Field(None, max_length=255)
     date: datetime
+    duration: Optional[int] = Field(None, ge=0, description="Duration in minutes")
     capacity: Optional[int] = Field(0, ge=0)
     is_active: Optional[bool] = True
 
@@ -18,6 +19,7 @@ class EventUpdate(BaseModel):
     description: Optional[str] = None
     location: Optional[str] = Field(None, max_length=255)
     date: Optional[datetime] = None
+    duration: Optional[int] = Field(None, ge=0, description="Duration in minutes")
     capacity: Optional[int] = Field(None, ge=0)
     is_active: Optional[bool] = None
 
