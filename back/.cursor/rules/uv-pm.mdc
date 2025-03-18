@@ -1,0 +1,167 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# UV Package Manager Documentation
+
+## Overview
+
+UV (pronounced "you-vee") is an extremely fast Python package and project manager written in Rust. It serves as a comprehensive replacement for multiple Python tools including `pip`, `pip-tools`, `pipx`, `poetry`, `pyenv`, `twine`, and `virtualenv`.
+
+## Basic Usage
+
+### Project Management
+
+1. **Initialize a New Project**
+   ```bash
+   uv init project-name
+   cd project-name
+   ```
+
+2. **Managing Dependencies**
+   ```bash
+   # Add a package to your project
+   uv add package-name
+   
+   # Add multiple packages
+   uv add package1 package2
+   
+   # Add development dependencies
+   uv add --dev pytest black
+   ```
+
+3. **Lock Dependencies**
+   ```bash
+   # Create/update lockfile
+   uv lock
+   
+   # Install from lockfile
+   uv sync
+   ```
+
+### Virtual Environments
+
+1. **Create Virtual Environment**
+   ```bash
+   # Default environment
+   uv venv
+   
+   # Custom Python version
+   uv venv my_env --python 3.x
+   ```
+
+2. **Activation**
+   ```bash
+   # Linux/macOS
+   source .venv/bin/activate
+   
+   # Windows
+   .\.venv\Scripts\activate.ps1
+   ```
+
+### Package Installation
+
+```bash
+# Install a single package
+uv pip install package-name
+
+# Install from requirements.txt
+uv pip install -r requirements.txt
+
+# Install current project in editable mode
+uv pip install -e .
+```
+
+### Tool Management
+
+```bash
+# Install global tools
+uv tool install ruff
+
+# Run tools without installation
+uvx black my_code.py
+
+# Project-specific tools
+uv add --dev black
+```
+
+### Python Version Management
+
+```bash
+# Install Python versions
+uv python install 3.8 3.9 3.10
+
+# Pin project Python version
+uv python pin 3.9
+
+# Run with specific version
+uv run -python 3.10 script.py
+```
+
+## Script Management
+
+UV supports managing dependencies for single-file scripts with inline metadata:
+
+```python
+# example.py
+import requests  # @uv.requirements: requests>=2.31.0
+
+response = requests.get("https://api.example.com")
+print(response.json())
+```
+
+Run with:
+```bash
+uv run example.py
+```
+
+## Best Practices
+
+1. **Version Control**
+   - Always commit both `pyproject.toml` and `uv.lock`
+   - Use `.gitignore` for `.venv` directory
+
+2. **Dependency Management**
+   - Use `uv add` for project dependencies
+   - Use `uv pip install` for one-off installations
+   - Regularly update lockfile with `uv lock`
+
+3. **Tool Management**
+   - Use `uv tool` for global developer tools
+   - Use `uvx` for one-off tool execution
+   - Add development tools to project with `uv add --dev`
+
+## Current Limitations
+
+1. **Pip Compatibility**
+   - Not all pip features are supported
+   - Some features are experimental
+   - Platform-specific requirements.txt generation
+
+2. **Feature Status**
+   - Some commands are marked experimental
+   - Workspace support is in development
+   - Some features may change without warning
+
+## Performance Benefits
+
+- 8-10x faster than pip with cold cache
+- 80-115x faster with warm cache
+- Efficient disk space usage through global cache
+- No Python dependency for core operations
+
+## Configuration
+
+UV can be configured through `pyproject.toml`:
+
+```toml
+[tool.uv]
+exclude-newer = "2024-03-01T00:00:00Z"
+```
+
+## Support and Updates
+
+- Self-update capability: `uv self update`
+- Documentation: `uv help`
+- Issue tracking: [GitHub Issues](mdc:https:/github.com/astral-sh/uv/issues) 
