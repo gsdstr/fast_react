@@ -86,7 +86,7 @@ services:
       - SENTRY_DSN=${SENTRY_DSN}
 
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/utils/health-check/"]
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -107,7 +107,7 @@ services:
         - VITE_API_URL=https://api.${DOMAIN?Variable not set}
         - NODE_ENV=production
     ports:
-      - "3000:3000"
+      - "3000:80"
 
 volumes:
   app-db-data:
