@@ -6,13 +6,13 @@ from app.database import engine, Base
 from app.routes.main import api_router
 
 # Load environment variables
-load_dotenv()
+load_dotenv(os.path.join(os.path.dirname(__file__), '../../.env'))
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
-    title=os.getenv("APP_NAME", "Backend API"),
+    title=os.getenv("PROJECT_NAME", "Backend API"),
     version=os.getenv("API_VERSION", "1.0.0"),
     description="FastAPI Backend Service",
     debug=os.getenv("DEBUG", "False").lower() == "true"

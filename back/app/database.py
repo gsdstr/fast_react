@@ -5,14 +5,14 @@ import os
 from dotenv import load_dotenv
 
 # Load environment variables
-load_dotenv()
+load_dotenv(os.path.join(os.path.dirname(__file__), '../../.env'))
 
 # Construct PostgreSQL URL
-POSTGRES_USER = os.getenv("DB_USER", "postgres")
-POSTGRES_PASSWORD = os.getenv("DB_PASSWORD", "postgres")
-POSTGRES_HOST = os.getenv("DB_HOST", "localhost")
-POSTGRES_PORT = os.getenv("DB_PORT", "5432")
-POSTGRES_DB = os.getenv("DB_NAME", "fastapi_db")
+POSTGRES_USER = os.getenv("POSTGRES_USER", "postgres")
+POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD", "postgres")
+POSTGRES_HOST = os.getenv("POSTGRES_SERVER", "localhost")
+POSTGRES_PORT = os.getenv("POSTGRES_PORT", "5432")
+POSTGRES_DB = os.getenv("POSTGRES_DB", "fastapi_db")
 
 SQLALCHEMY_DATABASE_URL = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"
 
