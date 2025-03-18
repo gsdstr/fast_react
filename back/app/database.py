@@ -2,16 +2,21 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import os
+from dotenv import load_dotenv
 
-SQLALCHEMY_DATABASE_URL = os.getenv(
-    "DATABASE_URL", 
-    "sqlite:///./sql_app.db"
-)
+# Load environment variables
+load_dotenv()
 
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL, 
-    connect_args={"check_same_thread": False}  # Needed for SQLite
-)
+# Construct PostgreSQL URL
+POSTGRES_USER = os.getenv("DB_USER", "postgres")
+POSTGRES_PASSWORD = os.getenv("DB_PASSWORD", "postgres")
+POSTGRES_HOST = os.getenv("DB_HOST", "localhost")
+POSTGRES_PORT = os.getenv("DB_PORT", "5432")
+POSTGRES_DB = os.getenv("DB_NAME", "fastapi_db")
+
+SQLALCHEMY_DATABASE_URL = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"
+
+engine = create_engine(SQLALCHEMY_DATABASE_URL)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
