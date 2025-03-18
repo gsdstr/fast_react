@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { format, addDays, startOfWeek, isSameDay, addMinutes, isWithinInterval } from 'date-fns';
 import { Event } from '@/lib/api';
 import { CalendarEvent } from './CalendarEvent';
-import { CreateEventModal } from './CreateEventModal';
+import { EventModal } from '@/components/EventModal';
 
 interface CalendarGridProps {
   events: Event[];
@@ -97,7 +97,7 @@ export function CalendarGrid({ events, selectedDate }: CalendarGridProps) {
         </div>
       </div>
 
-      <CreateEventModal
+      <EventModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         initialDate={selectedTime}

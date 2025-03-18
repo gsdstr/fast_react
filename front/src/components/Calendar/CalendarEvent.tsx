@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { format } from 'date-fns';
 import { Event } from '@/lib/api';
-import { CreateEventModal } from './CreateEventModal';
+import { EventModal } from '@/components/EventModal';
 
 interface CalendarEventProps {
   event: Event;
@@ -31,7 +31,7 @@ export function CalendarEvent({ event }: CalendarEventProps) {
         </div>
       </div>
 
-      <CreateEventModal
+      <EventModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         event={event}
